@@ -3,16 +3,19 @@
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
 
-  :dependencies [[bouncer "1.0.0"]
-                 [amazonica "0.3.48"
+  :dependencies [[amazonica "0.3.48"
                   :exclusions [com.amazonaws/aws-java-sdk
                                com.amazonaws/amazon-kinesis-client]]
-                 [com.amazonaws/aws-java-sdk "1.10.49"]
+                 [bouncer "1.0.0"]
                  [ch.qos.logback/logback-classic "1.1.7"]
+                 [cheshire "5.7.0"]
                  [cider/cider-nrepl "0.14.0"]
+                 [clj-time "0.13.0"]
                  [cljs-ajax "0.5.8"]
+                 [com.amazonaws/aws-java-sdk "1.10.49"]
                  [compojure "1.5.1"]
                  [cprop "0.1.9"]
+                 [environ "1.1.0"]
                  [luminus-http-kit "0.1.4"]
                  [luminus-nrepl "0.1.4"]
                  [luminus/ring-ttl-session "0.3.1"]
@@ -42,19 +45,23 @@
   :target-path "target/%s/"
   :main aws-console.core
 
-  :plugins [[lein-cprop "1.0.1"]
+  :plugins [[lein-auto "0.1.2"]
             [lein-cljsbuild "1.1.4"]
+            [lein-cprop "1.0.1"]
+            [lein-environ "1.1.0"]
+            [lein-kibit "0.1.2"]
             [lein-sassc "0.10.4"]
-            [lein-auto "0.1.2"]
-            [lein-kibit "0.1.2"]]
-   :sassc
-   [{:src "resources/scss/screen.scss"
-     :output-to "resources/public/css/screen.css"
-     :style "nested"
-     :import-path "resources/scss"}] 
+            [refactor-nrepl    "2.2.0"]
+            [cider/cider-nrepl "0.14.0"]
+            ]
+  :sassc
+  [{:src "resources/scss/screen.scss"
+    :output-to "resources/public/css/screen.css"
+    :style "nested"
+    :import-path "resources/scss"}] 
   
-   :auto
-   {"sassc" {:file-pattern #"\.(scss|sass)$" :paths ["resources/scss"]}} 
+  :auto
+  {"sassc" {:file-pattern #"\.(scss|sass)$" :paths ["resources/scss"]}} 
   
   :hooks [leiningen.sassc]
   :clean-targets ^{:protect false}
@@ -91,14 +98,14 @@
    :dev           [:project/dev :profiles/dev]
    :test          [:project/dev :project/test :profiles/test]
 
-   :project/dev  {:dependencies [[prone "1.1.4"]
-                                 [ring/ring-mock "0.3.0"]
-                                 [ring/ring-devel "1.5.0"]
-                                 [pjstadig/humane-test-output "0.8.1"]
-                                 [binaryage/devtools "0.8.3"]
+   :project/dev  {:dependencies [[binaryage/devtools "0.8.3"]
                                  [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
                                  [doo "0.1.7"]
-                                 [figwheel-sidecar "0.5.8"]]
+                                 [figwheel-sidecar "0.5.8"]
+                                 [pjstadig/humane-test-output "0.8.1"]
+                                 [prone "1.1.4"]
+                                 [ring/ring-devel "1.5.0"]
+                                 [ring/ring-mock "0.3.0"]]
                   :plugins      [[com.jakemccrary/lein-test-refresh "0.14.0"]
                                  [lein-doo "0.1.7"]
                                  [lein-figwheel "0.5.8"]

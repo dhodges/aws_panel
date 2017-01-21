@@ -1,6 +1,7 @@
 *.class
 *.css
 *.jar
+*.json
 .nrepl-port
 /.env
 /.lein-*

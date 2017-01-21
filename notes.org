@@ -8,11 +8,4 @@ http://www.luminusweb.net/docs/profiles.md
 
 lein new luminus aws_console +http-kit +cljs +reagent +cider +sassc +kibit
 
-download aws-sdk-java
-https://aws.amazon.com/sdk-for-java/
-
-placed within local maven repo
-~/.m2/repository/aws/aws-sdk-java/1.11.83
-
-add as a dependency to project.clj
-[aws/aws-sdk-java "1.11.83"]
+AWS javadocs: http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/index.html
