@@ -2,6 +2,7 @@
   (:require [compojure.core :refer [routes wrap-routes]]
             [aws-console.layout :refer [error-page]]
             [aws-console.routes.home :refer [home-routes]]
+            [aws-console.routes.websockets :refer [websocket-routes]]
             [compojure.route :as route]
             [aws-console.env :refer [defaults]]
             [mount.core :as mount]
@@ -13,6 +14,7 @@
 
 (def app-routes
   (routes
+   #'websocket-routes
     (-> #'home-routes
         (wrap-routes middleware/wrap-csrf)
         (wrap-routes middleware/wrap-formats))

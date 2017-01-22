@@ -1,5 +1,18 @@
 
 * Notes
+** <2017-01-22 Sun 12:57>
+
+** Q: what's the best way to auto-compile sass?
+** TODO: click on column to sort (Name, ip, environ...)
+
+logback pattern layout:
+https://logback.qos.ch/manual/layouts.html#ClassicPatternLayout
+
+```
+$ lein sassc clean
+$ lein auto sassc
+```
+
 ** <2017-01-21 Sat 16:17>
 https://github.com/mcohen01/amazonica
 http://blog.podsnap.com/yakherd.html

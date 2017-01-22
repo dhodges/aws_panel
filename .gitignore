@@ -2,6 +2,7 @@
 *.css
 *.jar
 *.json
+*.log
 .nrepl-port
 /.env
 /.lein-*

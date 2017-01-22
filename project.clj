@@ -13,6 +13,8 @@
                  [clj-time "0.13.0"]
                  [cljs-ajax "0.5.8"]
                  [com.amazonaws/aws-java-sdk "1.10.49"]
+                 [com.cognitect/transit-clj  "0.8.297"]
+                 [com.cognitect/transit-cljs "0.8.239"]
                  [compojure "1.5.1"]
                  [cprop "0.1.9"]
                  [environ "1.1.0"]
@@ -34,7 +36,6 @@
                  [ring-middleware-format "0.7.0"]
                  [ring-webjars "0.1.1"]
                  [ring/ring-defaults "0.2.1"]
-                 [secretary "1.2.3"]
                  [selmer "1.10.2"]]
 
   :min-lein-version "2.0.0"
@@ -57,6 +58,10 @@
   :sassc
   [{:src "resources/scss/screen.scss"
     :output-to "resources/public/css/screen.css"
+    :style "nested"
+    :import-path "resources/scss"}
+   {:src "resources/scss/ec2.sass"
+    :output-to "resources/public/css/ec2.css"
     :style "nested"
     :import-path "resources/scss"}] 
   

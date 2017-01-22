@@ -6,12 +6,16 @@
             [cider.nrepl :refer [cider-nrepl-handler]]
             [clojure.tools.cli :refer [parse-opts]]
             [clojure.tools.logging :as log]
-            [mount.core :as mount])
+            [mount.core :as mount]
+            [aws-console.notifiers.core :as notifiers]
+            )
   (:gen-class))
 
 (def cli-options
   [["-p" "--port PORT" "Port number"
     :parse-fn #(Integer/parseInt %)]])
+
+;; -----------------------------------------
 
 (mount/defstate ^{:on-reload :noop}
                 http-server
@@ -32,6 +36,13 @@
                 (when repl-server
                   (repl/stop repl-server)))
 
+
+(mount/defstate
+  notifiers
+  :start (notifiers/start)
+  :stop  (notifiers/stop))
+
+;; -----------------------------------------
 
 (defn stop-app []
   (doseq [component (:stopped (mount/stop))]

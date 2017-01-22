@@ -1,4 +1,4 @@
-(ns aws-console.ec2
+(ns aws-console.notifiers.ec2
   (:require [amazonica.core :refer [defcredential]]
             [amazonica.aws.ec2 :as ec2]
             [cheshire.core :refer [generate-string]]

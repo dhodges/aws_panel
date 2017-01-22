@@ -1,86 +1,56 @@
 (ns aws-console.core
   (:require [reagent.core :as r]
-            [reagent.session :as session]
-            [secretary.core :as secretary :include-macros true]
-            [goog.events :as events]
-            [goog.history.EventType :as HistoryEventType]
-            [markdown.core :refer [md->html]]
-            [aws-console.ajax :refer [load-interceptors!]]
-            [ajax.core :refer [GET POST]])
-  (:import goog.History))
+            [aws-console.websockets :as ws]
+            ))
 
-(defn nav-link [uri title page collapsed?]
-  [:li.nav-item
-   {:class (when (= page (session/get :page)) "active")}
-   [:a.nav-link
-    {:href uri
-     :on-click #(reset! collapsed? true)} title]])
+(defonce app-state
+  (r/atom {:ec2-instances [] 
+           }))
 
-(defn navbar []
-  (let [collapsed? (r/atom true)]
-    (fn []
-      [:nav.navbar.navbar-dark.bg-primary
-       [:button.navbar-toggler.hidden-sm-up
-        {:on-click #(swap! collapsed? not)} "☰"]
-       [:div.collapse.navbar-toggleable-xs
-        (when-not @collapsed? {:class "in"})
-        [:a.navbar-brand {:href "#/"} "aws_console"]
-        [:ul.nav.navbar-nav
-         [nav-link "#/" "Home" :home collapsed?]
-         [nav-link "#/about" "About" :about collapsed?]]]])))
+(defn all-instances
+  []
+  (let [instances (sort-by #(get-in % [:tags "Name"])
+                           (:ec2-instances @app-state))]
+    [:div#ec2.container.col-xs-12
+     [:table.table-condensed
+      [:thead
+       [:tr
+        [:th "Name"]
+        [:th "ip"]
+        [:th "environ"]]]
+      [:tbody
+       (for [row instances]
+         ^{:key row}
+         [:tr
+          [:td (get (:tags row) "Name")]
+          [:td (:private-ip-address row)]
+          [:td (get (:tags row) "environment_name")]
+          ])]]]))
+sort
+(defn ec2-component
+  []
+  [all-instances])
 
-(defn about-page []
-  [:div.container
-   [:div.row
-    [:div.col-md-12
-     "this is the story of aws_console... work in progress"]]])
+;; ------------------------------------------------
 
-(defn home-page []
-  [:div.container
-   (when-let [docs (session/get :docs)]
-     [:div.row>div.col-sm-12
-      [:div {:dangerouslySetInnerHTML
-             {:__html (md->html docs)}}]])])
+(defn update!
+  [keyword msg]
+  (swap! app-state update-in [keyword] (constantly msg)))
 
-(def pages
-  {:home #'home-page
-   :about #'about-page})
+(defn update-components!
+  [state]
+  (update! (:name state) (:msg state)))
 
-(defn page []
-  [(pages (session/get :page))])
-
-;; -------------------------
-;; Routes
-(secretary/set-config! :prefix "#")
-
-(secretary/defroute "/" []
-  (session/put! :page :home))
-
-(secretary/defroute "/about" []
-  (session/put! :page :about))
-
-;; -------------------------
-;; History
-;; must be called after routes have been defined
-(defn hook-browser-navigation! []
-  (doto (History.)
-        (events/listen
-          HistoryEventType/NAVIGATE
-          (fn [event]
-              (secretary/dispatch! (.-token event))))
-        (.setEnabled true)))
-
-;; -------------------------
-;; Initialize app
-(defn fetch-docs! []
-  (GET "/docs" {:handler #(session/put! :docs %)}))
+(defn render
+  [component id]
+  (r/render
+   [component] (.getElementById js/document id)))
 
 (defn mount-components []
-  (r/render [#'navbar] (.getElementById js/document "navbar"))
-  (r/render [#'page] (.getElementById js/document "app")))
+  (render #'ec2-component "ec2")
+)
 
 (defn init! []
-  (load-interceptors!)
-  (fetch-docs!)
-  (hook-browser-navigation!)
+  (ws/make-websocket!
+   (str "ws://" (.-host js/location) "/ws") update-components!)
   (mount-components))
