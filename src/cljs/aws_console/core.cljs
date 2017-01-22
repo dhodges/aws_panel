@@ -4,27 +4,41 @@
             ))
 
 (defonce app-state
-  (r/atom {:ec2-instances [] 
+  (r/atom {:ec2-instances []
+           :sort-order [:tags "Name"]
            }))
+
+(defn sort-order
+  [instance]
+  (get-in instance (:sort-order @app-state)))
+
+(defn set-sort-order
+  [order]
+  (swap! app-state
+         (fn [state]
+           (update-in state [:sort-order] (constantly order)))))
 
 (defn all-instances
   []
-  (let [instances (sort-by #(get-in % [:tags "Name"])
+  (let [instances (sort-by sort-order
                            (:ec2-instances @app-state))]
     [:div#ec2.container.col-xs-12
      [:table.table-condensed
       [:thead
        [:tr
-        [:th "Name"]
-        [:th "ip"]
-        [:th "environ"]]]
+        [:th {:on-click #(set-sort-order [:tags "Name"])}
+         "Name"]
+        [:th {:on-click #(set-sort-order [:private-ip-address])}
+         "ip"]
+        [:th {:on-click #(set-sort-order [:tags "environment_name"])}
+         "environ"]]]
       [:tbody
        (for [row instances]
          ^{:key row}
          [:tr
-          [:td (get (:tags row) "Name")]
-          [:td (:private-ip-address row)]
-          [:td (get (:tags row) "environment_name")]
+          [:td (get-in row [:tags "Name"])]
+          [:td (get-in row [:private-ip-address])]
+          [:td (get-in row [:tags "environment_name"])]
           ])]]]))
 sort
 (defn ec2-component

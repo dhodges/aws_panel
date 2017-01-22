@@ -56,12 +56,8 @@
             [cider/cider-nrepl "0.14.0"]
             ]
   :sassc
-  [{:src "resources/scss/screen.scss"
+  [{:src "resources/scss/screen.sass"
     :output-to "resources/public/css/screen.css"
-    :style "nested"
-    :import-path "resources/scss"}
-   {:src "resources/scss/ec2.sass"
-    :output-to "resources/public/css/ec2.css"
     :style "nested"
     :import-path "resources/scss"}] 
   
