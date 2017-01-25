@@ -51,20 +51,10 @@
             [lein-cprop "1.0.1"]
             [lein-environ "1.1.0"]
             [lein-kibit "0.1.2"]
-            [lein-sassc "0.10.4"]
             [refactor-nrepl    "2.2.0"]
             [cider/cider-nrepl "0.14.0"]
             ]
-  :sassc
-  [{:src "resources/scss/screen.sass"
-    :output-to "resources/public/css/screen.css"
-    :style "nested"
-    :import-path "resources/scss"}] 
   
-  :auto
-  {"sassc" {:file-pattern #"\.(scss|sass)$" :paths ["resources/scss"]}} 
-  
-  :hooks [leiningen.sassc]
   :clean-targets ^{:protect false}
   [:target-path [:cljsbuild :builds :app :compiler :output-dir] [:cljsbuild :builds :app :compiler :output-to]]
   :figwheel

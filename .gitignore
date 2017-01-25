@@ -4,6 +4,7 @@
 *.json
 *.log
 .nrepl-port
+.sass-cache
 /.env
 /.lein-*
 /checkouts
