@@ -10,15 +10,28 @@
     <div id="ec2"></div>
 
     <!-- scripts and styles -->
-    {% style "/assets/bootstrap/css/bootstrap.min.css" %}
     {% style "/assets/font-awesome/css/font-awesome.min.css" %}
     {% style "/css/screen.css" %}
-
+    {% style "/semantic-ui/common/semantic.css" %}
+    
     <script type="text/javascript">
         var context = "{{servlet-context}}";
         var csrfToken = "{{csrf-token}}";
     </script>
+
+    {% script "/js/jquery-3.1.1.js" %}
+    {% script "/js/tablesort.js" %}
+    {% script "/semantic-ui/common/semantic-ui.ext.js" %}
+    {% script "/semantic-ui/development/semantic.inc.js" %}
+
     {% script "/js/app.js" %}
+
+    <script type="text/javascript">
+      $(function() {
+        $('div#ec2 table').tablesort()
+      });
+    </script>
+
   </body>
 </html>
 

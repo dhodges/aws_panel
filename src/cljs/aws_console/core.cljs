@@ -1,5 +1,6 @@
 (ns aws-console.core
-  (:require [reagent.core :as r]
+  (:require [cljsjs.semantic-ui]
+            [reagent.core :as r]
             [aws-console.websockets :as ws]
             ))
 
@@ -22,23 +23,22 @@
   []
   (let [instances (sort-by sort-order
                            (:ec2-instances @app-state))]
-    [:div#ec2.container.col-xs-12
-     [:table.table-condensed
+    [:div#ec2
+     [:table.ui.collapsing.striped.sortable.red.single.line.table
       [:thead
        [:tr
-        [:th {:on-click #(set-sort-order [:tags "Name"])}
-         "Name"]
-        [:th {:on-click #(set-sort-order [:private-ip-address])}
-         "ip"]
-        [:th {:on-click #(set-sort-order [:tags "environment_name"])}
-         "environ"]]]
+        [:th "Name"]
+        [:th "ip"]
+        [:th "environ"]
+        [:th "state"]]]
       [:tbody
        (for [row instances]
          ^{:key row}
          [:tr
-          [:td (get-in row [:tags "Name"])]
-          [:td (get-in row [:private-ip-address])]
-          [:td (get-in row [:tags "environment_name"])]
+          [:td.collapsing (get-in row [:tags "Name"])]
+          [:td.collapsing (:private-ip-address row)]
+          [:td.collapsing (get-in row [:tags "environment_name"])]
+          [:td.collapsing (get-in row [:state :name])]
           ])]]]))
 sort
 (defn ec2-component

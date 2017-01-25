@@ -47,9 +47,19 @@
   [instance]
   (update-in instance [:tags] #(apply merge (map tag-to-map %))))
 
+(defn update-state
+  [instance]
+  (update-in instance [:state] #(:name %)))
+
+(defn raw-instances
+  []
+  (map #(select-keys % @instance-keys)
+       (flatten (map #(:instances %)
+                     (:reservations (ec2/describe-instances))))))
+
 (defn get-instances
   []
-  (let [instances (map #(select-keys % @instance-keys)
-                       (flatten (map #(:instances %)
-                                     (:reservations (ec2/describe-instances)))))]
-    (mapv update-tags instances)))
+  (->> (raw-instances)
+       (mapv update-tags)
+       (mapv update-state)
+       ))
