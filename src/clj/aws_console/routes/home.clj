@@ -1,16 +1,15 @@
 (ns aws-console.routes.home
-  (:require [aws-console.layout :as layout]
-            [compojure.core :refer [defroutes GET]]
+  (:require [compojure.core :refer [defroutes GET]]
             [ring.util.http-response :as response]
             [clojure.java.io :as io]))
 
-(defn home-page []
-  (layout/render "home.html"))
+(defn page-resource
+  [path]
+  (-> (response/ok (-> path io/resource slurp))
+      (response/header "Content-Type" "text/html; charset=utf-8")))
 
 (defroutes home-routes
   (GET "/" []
-       (home-page))
-  (GET "/docs" []
-       (-> (response/ok (-> "docs/docs.md" io/resource slurp))
-       (response/header "Content-Type" "text/plain; charset=utf-8"))))
+       (page-resource "public/index.html"))
+)
 
