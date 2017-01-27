@@ -2,49 +2,62 @@
   (:require [cljsjs.semantic-ui]
             [reagent.core :as r]
             [aws-console.websockets :as ws]
-            ))
+
+            [clojure.string :as str]))
 
 (defonce app-state
   (r/atom {:ec2-instances []
-           :sort-order [:tags "Name"]
-           }))
+           :route53-record-sets []}))
 
-(defn sort-order
-  [instance]
-  (get-in instance (:sort-order @app-state)))
-
-(defn set-sort-order
-  [order]
-  (swap! app-state
-         (fn [state]
-           (update-in state [:sort-order] (constantly order)))))
-
-(defn all-instances
+(defn ec2-instances
   []
-  (let [instances (sort-by sort-order
-                           (:ec2-instances @app-state))]
-    [:div#ec2
-     [:table.ui.collapsing.striped.sortable.red.single.line.table
-      [:thead
+  [:div#ec2
+   [:table.ui.collapsing.striped.sortable.blue.single.line.table
+    [:thead
+     [:tr
+      [:th "EC2 instance name"]
+      [:th "private ip"]
+      [:th "env"]
+      [:th "state"]
+      ]]
+    [:tbody
+     (for [row (:ec2-instances @app-state)]
+       ^{:key row}
        [:tr
-        [:th "EC2 instance name"]
-        [:th "ip"]
-        [:th "env"]
-        [:th "state"]
-        ]]
-      [:tbody
-       (for [row instances]
-         ^{:key row}
-         [:tr
-          [:td.collapsing (get-in row [:tags "Name"])]
-          [:td.collapsing (get-in row [:private-ip-address])]
-          [:td.collapsing (get-in row [:tags "environment_name"])]
-          [:td.collapsing (get-in row [:state])]
-          ])]]]))
-sort
+        [:td.collapsing (:name row)]
+        [:td.collapsing (:private-ip-address row)]
+        [:td.collapsing (:env row)]
+        [:td.collapsing (:state row)]
+        ])]]])
+
+(defn route53-record-sets
+  []
+  [:div#route53
+   [:table.ui.collapsing.striped.sortable.blue.single.line.table
+    [:thead
+     [:tr
+      [:th "Route53 name"]
+      [:th "type"]
+      [:th.right.aligned "ttl"]
+      [:th "values"]
+      ]]
+    [:tbody
+     (for [record (:route53-record-sets @app-state)]
+       ^{:key record}
+       [:tr
+        [:td.collapsing (:name record)]
+        [:td.collapsing (:type record)]
+        [:td.collapsing.right.aligned (:ttl  record)]
+        [:td.collapsing (str/join " '" (:resource-records record))]
+        ])]]])
+
 (defn ec2-component
   []
-  [all-instances])
+  [ec2-instances])
+
+(defn route53-component
+  []
+  [route53-record-sets])
 
 ;; ------------------------------------------------
 
@@ -63,6 +76,7 @@ sort
 
 (defn mount-components []
   (render #'ec2-component "ec2")
+  (render #'route53-component "route53")
 )
 
 (defn init! []

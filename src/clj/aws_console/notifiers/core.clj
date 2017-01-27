@@ -2,6 +2,7 @@
   (:require [clojure.tools.logging :as log]
             [aws-console.routes.websockets :as ws]
             [aws-console.notifiers.ec2 :as ec2]
+            [aws-console.notifiers.route53 :as route53]
             ))
 
 (defonce notifiers (atom {}))
@@ -74,4 +75,5 @@
 
 ;; ------------------------------------
 
-(defnotifier :ec2-instances ec2/get-instances 10)
+(defnotifier :ec2-instances ec2/list-instances 15)
+(defnotifier :route53-record-sets route53/list-record-sets 20)
