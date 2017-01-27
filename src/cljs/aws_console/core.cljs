@@ -27,18 +27,19 @@
      [:table.ui.collapsing.striped.sortable.red.single.line.table
       [:thead
        [:tr
-        [:th "Name"]
+        [:th "EC2 instance name"]
         [:th "ip"]
-        [:th "environ"]
-        [:th "state"]]]
+        [:th "env"]
+        [:th "state"]
+        ]]
       [:tbody
        (for [row instances]
          ^{:key row}
          [:tr
           [:td.collapsing (get-in row [:tags "Name"])]
-          [:td.collapsing (:private-ip-address row)]
+          [:td.collapsing (get-in row [:private-ip-address])]
           [:td.collapsing (get-in row [:tags "environment_name"])]
-          [:td.collapsing (get-in row [:state :name])]
+          [:td.collapsing (get-in row [:state])]
           ])]]]))
 sort
 (defn ec2-component

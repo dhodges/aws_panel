@@ -51,6 +51,28 @@
   [instance]
   (update-in instance [:state] #(:name %)))
 
+(defn split-name
+  [name]
+  (if (re-matches #"^[0-9]+.*$" name)
+    (first (str/split name #"-"))
+    name))
+
+(defn update-name
+  [instance]
+  (update-in instance [:tags "Name"] split-name))
+
+;; e.g. "2.512.issue_1998-718fcc6f39b72099644a7a48adca6f29b3320dda(jenkins)
+(defn git-sha-from-name
+  [name]
+  (when (re-matches #"^[0-9]+.*$" name)
+    (let [git-sha (str/join "-" (rest (str/split name #"-")))]
+      (first (str/split git-sha #"\(")))))
+
+(defn update-git-sha
+  [instance]
+  (assoc-in instance [:git-sha]
+            (git-sha-from-name (get-in instance [:tags "Name"]))))
+
 (defn raw-instances
   []
   (map #(select-keys % @instance-keys)
@@ -62,4 +84,6 @@
   (->> (raw-instances)
        (mapv update-tags)
        (mapv update-state)
+       (mapv update-git-sha)
+       (mapv update-name)
        ))
