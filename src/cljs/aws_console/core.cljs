@@ -1,56 +1,66 @@
 (ns aws-console.core
-  (:require [cljsjs.semantic-ui]
-            [reagent.core :as r]
-            [aws-console.websockets :as ws]
-            [clojure.string :as str]))
+  (:require [aws-console.websockets :as ws]
+            [clojure.string :as str]
+            [cljsjs.semantic-ui]
+            [reagent.core :as r]))
 
 (defonce app-state
   (r/atom {:ec2-instances []
            :route53-records []}))
 
+(defn search-box
+  []
+  [:div.search
+   [:i.fa.fa-search]
+   [:input {:type "text"}]
+   [:i.fa.fa-times-circle]
+   ])
+
 (defn ec2-instances
   []
-  [:div#ec2
-   [:table.ui.collapsing.striped.sortable.blue.single.line.table
-    [:thead
-     [:tr
-      [:th "EC2 instance name"]
-      [:th "private ip"]
-      [:th "env"]
-      [:th "launch time"]
-      [:th "state"]
-      ]]
-    [:tbody
-     (for [row (:ec2-instances @app-state)]
-       ^{:key row}
-       [:tr
-        [:td.collapsing (:name row)]
-        [:td.collapsing (:private-ip-address row)]
-        [:td.collapsing (:env row)]
-        [:td.collapsing (:launch-time row)]
-        [:td.collapsing (:state row)]
-        ])]]])
+  [:div.component
+   [search-box]
+   [:div#ec2-instances
+    [:table.ui.collapsing.striped.sortable.single.line.table
+     [:thead
+      [:tr
+       [:th "EC2 instance name"]
+       [:th "private ip"]
+       [:th "env"]
+       [:th "launch time"]
+       [:th "state"]
+       ]]
+     [:tbody
+      (for [row (:ec2-instances @app-state)]
+        ^{:key row}
+        [:tr
+         [:td.collapsing (:name row)]
+         [:td.collapsing (:private-ip-address row)]
+         [:td.collapsing (:env row)]
+         [:td.collapsing (:launch-time row)]
+         [:td.collapsing (:state row)]
+         ])]]]])
 
 (defn route53-records
   []
-  [:div#route53
-   [:table.ui.collapsing.striped.sortable.blue.single.line.table
-    [:thead
-     [:tr
-      [:th "Route53 name"]
-      [:th "type"]
-      [:th.right.aligned "ttl"]
-      [:th "values"]
-      ]]
-    [:tbody
-     (for [record (:route53-records @app-state)]
-       ^{:key record}
-       [:tr
-        [:td.collapsing (:name record)]
-        [:td.collapsing (:type record)]
-        [:td.collapsing (:ttl  record)]
-        [:td.collapsing (:resource-records record)]
-        ])]]])
+  [:div.component
+   [search-box]
+   [:div#route53-records
+    [:table.ui.collapsing.striped.sortable.single.line.table
+     [:thead
+      [:tr
+       [:th "Route53 name"]
+       [:th "type"]
+       [:th.right.aligned "ttl"]
+       ]]
+     [:tbody
+      (for [record (:route53-records @app-state)]
+        ^{:key record}
+        [:tr
+         [:td.collapsing (:name record)]
+         [:td.collapsing (:type record)]
+         [:td.collapsing (:ttl  record)]
+         ])]]]])
 
 (defn ec2-component
   []
