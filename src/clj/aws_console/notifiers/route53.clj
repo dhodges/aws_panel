@@ -33,9 +33,9 @@
 
 (defn update-resource-records
   [record-set]
-  (update-in record-set [:resource-records]
-             (fn [records]
-               (mapv #(:value %) records))))
+  (update record-set :resource-records
+          (fn [records]
+            (str/join " " (mapv #(:value %) records)))))
 
 (defn list-record-sets
   []

@@ -1,7 +1,7 @@
 (defproject aws_console "0.1.0-SNAPSHOT"
 
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "playing with clojurescript - a simple AWS console"
+  :url ""
 
   :dependencies [[amazonica "0.3.48"
                   :exclusions [com.amazonaws/aws-java-sdk

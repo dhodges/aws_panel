@@ -6,7 +6,7 @@
 
 (defonce app-state
   (r/atom {:ec2-instances []
-           :route53-record-sets []}))
+           :route53-records []}))
 
 (defn ec2-instances
   []
@@ -31,7 +31,7 @@
         [:td.collapsing (:state row)]
         ])]]])
 
-(defn route53-record-sets
+(defn route53-records
   []
   [:div#route53
    [:table.ui.collapsing.striped.sortable.blue.single.line.table
@@ -43,13 +43,13 @@
       [:th "values"]
       ]]
     [:tbody
-     (for [record (:route53-record-sets @app-state)]
+     (for [record (:route53-records @app-state)]
        ^{:key record}
        [:tr
         [:td.collapsing (:name record)]
         [:td.collapsing (:type record)]
-        [:td.collapsing.right.aligned (:ttl  record)]
-        [:td.collapsing (str/join " '" (:resource-records record))]
+        [:td.collapsing (:ttl  record)]
+        [:td.collapsing (:resource-records record)]
         ])]]])
 
 (defn ec2-component
@@ -58,7 +58,7 @@
 
 (defn route53-component
   []
-  [route53-record-sets])
+  [route53-records])
 
 ;; ------------------------------------------------
 

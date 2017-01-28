@@ -76,4 +76,4 @@
 ;; ------------------------------------
 
 (defnotifier :ec2-instances ec2/list-instances 15)
-(defnotifier :route53-record-sets route53/list-record-sets 20)
+(defnotifier :route53-records route53/list-record-sets 20)
