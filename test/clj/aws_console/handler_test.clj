@@ -1,4 +1,4 @@
-(ns aws-console.test.handler
+(ns aws-console.handler-test
   (:require [clojure.test :refer :all]
             [ring.mock.request :refer :all]
             [aws-console.handler :refer :all]))
