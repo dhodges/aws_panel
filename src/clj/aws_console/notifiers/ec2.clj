@@ -4,6 +4,7 @@
             [cheshire.core :refer [generate-string]]
             [cheshire.generate :as generate]
             [clj-time.coerce :as coerce]
+            [clj-time.format :as f]
             [clojure.string :as str]
             [environ.core :refer [env]]))
 
@@ -17,6 +18,9 @@
                         (.writeString jsonGenerator
                                       (coerce/to-string data))))
 
+(def datetime_fmt
+  (f/formatters :date-hour-minute-second))
+
 ;; "tags": [
 ;;   {
 ;;     "value": "atlas-prod",
@@ -25,61 +29,61 @@
 ;; ...
 ;; ],
 
-(defn tag-to-map
+(defn- tag-to-map
   [tag]
   (sorted-map (:key tag) (:value tag)))
 
-(defn update-tags
+(defn- update-tags
   [instance]
   (update-in instance [:tags] #(apply merge (map tag-to-map %))))
 
-(defn split-name
+(defn- split-name
   [name]
   (if (re-matches #"^[0-9]+.*$" name)
     (first (str/split name #"-"))
     name))
 
-(defn update-name
+(defn- update-name
   [instance]
   (assoc-in instance [:name]
             (split-name (get-in instance [:tags "Name"]))))
 
-(defn update-env
+(defn- update-env
   [instance]
   (assoc-in instance [:env]
             (or (get-in instance [:tags "environment_name"])
                 "")))
 
-(defn update-state
+(defn- update-state
   [instance]
   (update-in instance [:state] #(:name %)))
 
-(defn git-sha-from-name
-  [name]
-  ;; e.g. "2.512.issue_1998-718fcc6f39b72099644a7a48adca6f29b3320dda(jenkins)
-  (when (re-matches #"^[0-9]+.*$" name)
-    (let [git-sha (str/join "-" (rest (str/split name #"-")))]
-      (first (str/split git-sha #"\(")))))
-
-(defn update-git-sha
+(defn- update-launch-time
   [instance]
-  (assoc-in instance [:git-sha]
-            (git-sha-from-name (get-in instance [:tags "Name"]))))
+  (update instance :launch-time #(f/unparse datetime_fmt %)))
+
+
+(defn- describe-ec2-instances
+  []
+  (flatten
+   (mapv #(:instances %)
+         (:reservations (ec2/describe-instances)))))
+
+(defn- filter-instances
+  [instances]
+  (->> instances
+       (map update-tags)
+       (map update-name)
+       (map update-env)
+       (map update-state)
+       (map update-launch-time)))
 
 (defn list-instances
   []
-  (let [instances (->> (:reservations (ec2/describe-instances))
-                       (map #(:instances %))
-                       (flatten)
-                       (map update-tags)
-                       (map update-name)
-                       (map update-env)
-                       (map update-state)
-                       (map update-git-sha)
-                       )]
-    (map #(select-keys % [:name
-                          :private-ip-address
-                          :env
-                          :state])
-         instances)))
+  (map #(select-keys % [:name
+                        :private-ip-address
+                        :env
+                        :launch-time
+                        :state])
+       (filter-instances (describe-ec2-instances))))
 

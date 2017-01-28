@@ -2,7 +2,6 @@
   (:require [cljsjs.semantic-ui]
             [reagent.core :as r]
             [aws-console.websockets :as ws]
-
             [clojure.string :as str]))
 
 (defonce app-state
@@ -18,6 +17,7 @@
       [:th "EC2 instance name"]
       [:th "private ip"]
       [:th "env"]
+      [:th "launch time"]
       [:th "state"]
       ]]
     [:tbody
@@ -27,6 +27,7 @@
         [:td.collapsing (:name row)]
         [:td.collapsing (:private-ip-address row)]
         [:td.collapsing (:env row)]
+        [:td.collapsing (:launch-time row)]
         [:td.collapsing (:state row)]
         ])]]])
 
