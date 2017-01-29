@@ -4,43 +4,20 @@ body
   padding-top: 40px
 
 #ec2-instances, #route53-records
-  max-height: 292px
-  overflow-y: scroll
+  display:     inline-block
+
+.component
+  display:       inline-block
+  padding-top:   10px
+  max-height:   292px
+  overflow-y:   scroll
+
   table
+    font-size:   10pt
+    line-height:  5px
     margin-top:   0
     
-.component
-  display:    inline-block
-
-table
-  font-size:   10pt
-  line-height:  5px
-  
-  th
-    &:hover
-      cursor: pointer
-
-.search
-  min-height:     25px
-  margin-bottom:  10px
-  border-bottom-width: 2px
-  border-bottom-style: solid
-  border-bottom-color: lightblue
-
-  i.fa
-    font-size:    20px
-    margin-left:  10px
-    display:      inline-block
-    vertical-align: top
-    
-    &.fa-search
-      margin-right: 10px
-      
-    &.fa-times-circle
-      color:       gray
+    th
       &:hover
         cursor: pointer
-    
-  input
-    width: 85%
-    margin-bottom: 10px
+
