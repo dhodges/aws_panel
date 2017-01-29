@@ -62,6 +62,7 @@
   {:http-server-root "public"
    :nrepl-port 7002
    :css-dirs ["resources/public/css"]
+   :ansi-color-output false
    :nrepl-middleware
    [cemerick.piggieback/wrap-cljs-repl cider.nrepl/cider-middleware]}
   
