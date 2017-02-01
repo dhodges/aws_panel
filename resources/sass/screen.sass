@@ -16,8 +16,38 @@ body
     font-size:   10pt
     line-height:  5px
     margin-top:   0
+
+    td, th
+      display: table-cell
     
     th
       &:hover
         cursor: pointer
 
+    tr
+      display:  table-row
+
+// fixed table header style
+// gleefully copied from: http://salzerdesign.com/test/fixedTable.html
+  
+.fixed-table-container
+  height:   300px
+  position: relative
+
+.fixed-table-container-inner
+  overflow-x: hidden
+  overflow-y: auto
+  height:     100%
+
+.header-background
+  background-color: #d5ecff
+  position:   absolute
+  top:        0
+  right:      0
+  left:       0
+  height:     30px
+  
+.th-inner
+  position: absolute
+  top:      0
+  line-height: 30px

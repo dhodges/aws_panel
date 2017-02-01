@@ -31,25 +31,28 @@
       [:div#ec2-instances
        [search-box filter]
        [:div.component
-        [:table.ui.collapsing.striped.sortable.single.line.table
-         [:thead
-          [:tr
-           [:th "EC2 instance name"]
-           [:th "private ip"]
-           [:th "env"]
-           [:th "launch time"]
-           [:th "state"]
-           ]]
-         [:tbody
-          (for [row (filter-content @filter (:ec2-instances @app-state))]
-            ^{:key (:id row)}
+        [:div.fixed-table-container
+         [:div.header-background]
+         [:div.fixed-table-container-inner
+          [:table.ui.collapsing.striped.sortable.single.line.table
+           [:thead
             [:tr
-             [:td.collapsing (:name row)]
-             [:td.collapsing (:private-ip-address row)]
-             [:td.collapsing (:env row)]
-             [:td.collapsing (:launch-time row)]
-             [:td.collapsing (:state row)]
-             ])]]]])))
+             [:th [:div.th-inner "EC2 instance name"]]
+             [:th [:div.th-inner "private ip"]]
+             [:th [:div.th-inner "env"]]
+             [:th [:div.th-inner "launch time"]]
+             [:th [:div.th-inner "state"]]
+             ]]
+           [:tbody
+            (for [row (filter-content @filter (:ec2-instances @app-state))]
+              ^{:key (:id row)}
+              [:tr
+               [:td.collapsing (:name row)]
+               [:td.collapsing (:private-ip-address row)]
+               [:td.collapsing (:env row)]
+               [:td.collapsing (:launch-time row)]
+               [:td.collapsing (:state row)]
+               ])]]]]]])))
 
 (defn route53-records
   []
@@ -58,21 +61,24 @@
       [:div#route53-records
        [search-box filter]
        [:div.component
-        [:table.ui.collapsing.striped.sortable.single.line.table
-         [:thead
-          [:tr
-           [:th "Route53 name"]
-           [:th "type"]
-           [:th "ttl"]
-           ]]
-         [:tbody
-          (for [row (filter-content @filter (:route53-records @app-state))]
-            ^{:key (:id row)}
+        [:div.fixed-table-container
+         [:div.header-background]
+         [:div.fixed-table-container-inner
+          [:table.ui.collapsing.striped.sortable.single.line.table
+           [:thead
             [:tr
-             [:td.collapsing (:name row)]
-             [:td.collapsing (:type row)]
-             [:td.collapsing (:ttl row)]
-             ])]]]])))
+             [:th [:div.th-inner "Route53 name"]]
+             [:th [:div.th-inner "type"]]
+             [:th [:div.th-inner "ttl"]]
+             ]]
+           [:tbody
+            (for [row (filter-content @filter (:route53-records @app-state))]
+              ^{:key (:id row)}
+              [:tr
+               [:td.collapsing (:name row)]
+               [:td.collapsing (:type row)]
+               [:td.collapsing (:ttl row)]
+               ])]]]]]])))
 
 ;; ------------------------------------------------
 
