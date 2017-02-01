@@ -62,6 +62,13 @@
   [instance]
   (update instance :launch-time #(f/unparse datetime_fmt %)))
 
+(defn- uuid
+  []
+  (java.util.UUID/randomUUID))
+
+(defn- update-id
+  [instance]
+  (assoc instance :id (uuid)))
 
 (defn- describe-ec2-instances
   []
@@ -76,11 +83,13 @@
        (map update-name)
        (map update-env)
        (map update-state)
-       (map update-launch-time)))
+       (map update-launch-time)
+       (map update-id)))
 
 (defn list-instances
   []
-  (map #(select-keys % [:name
+  (map #(select-keys % [:id
+                        :name
                         :private-ip-address
                         :env
                         :launch-time

@@ -42,7 +42,7 @@
            ]]
          [:tbody
           (for [row (filter-content @filter (:ec2-instances @app-state))]
-            ^{:key (random-uuid)}
+            ^{:key (:id row)}
             [:tr
              [:td.collapsing (:name row)]
              [:td.collapsing (:private-ip-address row)]
@@ -67,7 +67,7 @@
            ]]
          [:tbody
           (for [row (filter-content @filter (:route53-records @app-state))]
-            ^{:key (random-uuid)}
+            ^{:key (:id row)}
             [:tr
              [:td.collapsing (:name row)]
              [:td.collapsing (:type row)]

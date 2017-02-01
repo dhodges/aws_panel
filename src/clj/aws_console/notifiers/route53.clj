@@ -37,6 +37,16 @@
           (fn [records]
             (str/join " " (mapv #(:value %) records)))))
 
+(defn- uuid
+  []
+  (java.util.UUID/randomUUID))
+
+(defn- update-id
+  [instance]
+  (assoc instance :id (uuid)))
+
 (defn list-record-sets
   []
-  (mapv update-resource-records (get-record-sets))) 
+  (->> (get-record-sets)
+       (mapv update-resource-records)
+       (mapv update-id)))
