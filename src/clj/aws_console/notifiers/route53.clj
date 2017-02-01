@@ -16,7 +16,7 @@
   (atom {:id "Z3PQK17IX127NB"
          :domain-name "spp.lonelyplanet.com"}))
 
-(defn get-record-sets
+(defn- get-record-sets
   []
   (:resource-record-sets
    (route53/list-resource-record-sets :hosted-zone-id (:id @hosted-zone))))
@@ -31,7 +31,7 @@
 ;;   {:value "ns-1261.awsdns-29.org."}
 ;;   ]}
 
-(defn update-resource-records
+(defn- update-resource-records
   [record-set]
   (update record-set :resource-records
           (fn [records]
