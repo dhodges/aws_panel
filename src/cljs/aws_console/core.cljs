@@ -47,11 +47,11 @@
             (for [row (filter-content @filter (:ec2-instances @app-state))]
               ^{:key (:id row)}
               [:tr
-               [:td.collapsing (:name row)]
-               [:td.collapsing (:private-ip-address row)]
-               [:td.collapsing (:env row)]
-               [:td.collapsing (:launch-time row)]
-               [:td.collapsing (:state row)]
+               [:td (:name row)]
+               [:td (:private-ip-address row)]
+               [:td (:env row)]
+               [:td (:launch-time row)]
+               [:td (:state row)]
                ])]]]]]])))
 
 (defn route53-records
