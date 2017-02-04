@@ -6,13 +6,11 @@
   :dependencies [[amazonica "0.3.48"
                   :exclusions [com.amazonaws/aws-java-sdk
                                com.amazonaws/amazon-kinesis-client]]
-                 [bouncer "1.0.0"]
                  [ch.qos.logback/logback-classic "1.1.7"]
                  [cheshire "5.7.0"]
                  [cider/cider-nrepl "0.14.0"]
                  [clj-time "0.13.0"]
                  [cljs-ajax "0.5.8"]
-                 [cljsjs/semantic-ui "2.2.4-0"]
                  [com.amazonaws/aws-java-sdk "1.10.49"]
                  [com.cognitect/transit-clj  "0.8.297"]
                  [com.cognitect/transit-cljs "0.8.239"]
@@ -22,7 +20,6 @@
                  [luminus-http-kit "0.1.4"]
                  [luminus-nrepl "0.1.4"]
                  [luminus/ring-ttl-session "0.3.1"]
-                 [markdown-clj "0.9.91"]
                  [metosin/ring-http-response "0.8.0"]
                  [mount "0.1.10"]
                  [org.clojure/clojure "1.8.0"]
