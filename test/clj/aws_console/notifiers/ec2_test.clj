@@ -1,8 +1,6 @@
 (ns aws-console.notifiers.ec2-test
   (:require [aws-console.notifiers.ec2 :as ec2]
-            [aws-console.notifiers.fixtures :as fixtures]
             [clj-time.core :as time]
-            [clj-time.format :as f]
             [clojure.test :refer :all]))
 
 (def raw-ec2 {:monitoring {:state "disabled"}, 
@@ -86,5 +84,5 @@
                (:state ec2))))
 
       (testing "filtering :launch-time"
-        (is (= "2017-01-25T13:31:31"
+        (is (= "2017-01-25T13:31"
                (:launch-time ec2)))))))

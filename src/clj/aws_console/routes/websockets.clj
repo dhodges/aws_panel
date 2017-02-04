@@ -4,7 +4,7 @@
              :refer [send! with-channel on-close on-receive]]
             [cognitect.transit :as t]
             [clojure.tools.logging :as log]
-            )
+            [clojure.string :as str])
   (:import [java.io ByteArrayOutputStream]))
 
 (defonce channels (atom #{}))
@@ -41,9 +41,14 @@
     ret))
 
 (defn notify-clients [msg]
-  (let [message (marshall msg)]
-    (doseq [channel @channels]
-      (send! channel message))))
+  (try
+    (let [message (marshall msg)]
+      (doseq [channel @channels]
+        (send! channel message)))
+    (catch Exception e
+      (log/error "error marshalling message: ")
+      (log/error (str msg))
+      (log/error (str/join "\n" (map str (.getStackTrace e)))))))
 
 (defn ws-handler [request]
   (with-channel request channel

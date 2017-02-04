@@ -57,7 +57,9 @@
             ]
   
   :clean-targets ^{:protect false}
-  [:target-path [:cljsbuild :builds :app :compiler :output-dir] [:cljsbuild :builds :app :compiler :output-to]]
+  [:target-path
+   [:cljsbuild :builds :app :compiler :output-dir]
+   [:cljsbuild :builds :app :compiler :output-to]]
   :figwheel
   {:http-server-root "public"
    :nrepl-port 7002
@@ -65,7 +67,6 @@
    :ansi-color-output false
    :nrepl-middleware
    [cemerick.piggieback/wrap-cljs-repl cider.nrepl/cider-middleware]}
-  
 
   :profiles
   {:uberjar {:omit-source true
@@ -81,8 +82,7 @@
                  :pretty-print false
                  :closure-warnings
                  {:externs-validation :off :non-standard-jsdoc :off}}}}}
-             
-             
+
              :aot :all
              :uberjar-name "aws_console.jar"
              :source-paths ["env/prod/clj"]
@@ -116,14 +116,13 @@
                       :optimizations :none
                       :pretty-print true}}}}
                   
-                  
-                  
                   :doo {:build "test"}
                   :source-paths ["env/dev/clj" "test/clj"]
                   :resource-paths ["env/dev/resources"]
                   :repl-options {:init-ns user}
                   :injections [(require 'pjstadig.humane-test-output)
                                (pjstadig.humane-test-output/activate!)]}
+
    :project/test {:resource-paths ["env/test/resources"]
                   :cljsbuild
                   {:builds
@@ -133,8 +132,7 @@
                      {:output-to "target/test.js"
                       :main "aws-console.doo-runner"
                       :optimizations :whitespace
-                      :pretty-print true}}}}
-                  
-                  }
+                      :pretty-print true}}}}}
+   
    :profiles/dev {}
    :profiles/test {}})

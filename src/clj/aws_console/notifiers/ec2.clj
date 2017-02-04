@@ -1,6 +1,7 @@
 (ns aws-console.notifiers.ec2
   (:require [amazonica.core :refer [defcredential]]
             [amazonica.aws.ec2 :as ec2]
+            [aws-console.notifiers.util :refer [update-id]]
             [cheshire.core :refer [generate-string]]
             [cheshire.generate :as generate]
             [clj-time.coerce :as coerce]
@@ -19,7 +20,7 @@
                                       (coerce/to-string data))))
 
 (def datetime_fmt
-  (f/formatters :date-hour-minute-second))
+  (f/formatters :date-hour-minute))
 
 ;; "tags": [
 ;;   {
@@ -61,14 +62,6 @@
 (defn- update-launch-time
   [instance]
   (update instance :launch-time #(f/unparse datetime_fmt %)))
-
-(defn- uuid
-  []
-  (java.util.UUID/randomUUID))
-
-(defn- update-id
-  [instance]
-  (assoc instance :id (uuid)))
 
 (defn- describe-ec2-instances
   []

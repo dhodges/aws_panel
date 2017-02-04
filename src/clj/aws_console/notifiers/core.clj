@@ -3,7 +3,8 @@
             [aws-console.routes.websockets :as ws]
             [aws-console.notifiers.ec2 :as ec2]
             [aws-console.notifiers.route53 :as route53]
-            ))
+            [aws-console.notifiers.cloudformation :as cloudform]
+            [clojure.string :as str]))
 
 (defonce notifiers (atom {}))
 
@@ -38,7 +39,8 @@
             (try
               (ws/notify-clients {:name name :msg (update_fn)})
               (catch Exception e
-                (log/error (str "Error when notifying " name " - " (.getMessage e)))))
+                (log/error (str "Error when notifying " name " - " (.getMessage e)))
+                (log/error (str/join "\n" (map str (.getStackTrace e))))))
             (Thread/sleep (* frequency 1000))
             (recur)))))))
 
@@ -75,5 +77,8 @@
 
 ;; ------------------------------------
 
-(defnotifier :ec2-instances ec2/list-instances 15)
+(defnotifier :ec2-instances   ec2/list-instances 15)
 (defnotifier :route53-records route53/list-record-sets 20)
+(defnotifier :stacks          cloudform/list-stacks 20)
+
+

@@ -6,7 +6,8 @@
 
 (defonce app-state
   (r/atom {:ec2-instances []
-           :route53-records []}))
+           :route53-records []
+           :stacks []}))
 
 (defn log [str]
   (.log js/console str))
@@ -37,7 +38,7 @@
           [:table.ui.collapsing.striped.sortable.single.line.table
            [:thead
             [:tr
-             [:th [:div.th-inner "EC2 instance name"]]
+             [:th [:div.th-inner "EC2 name"]]
              [:th [:div.th-inner "private ip"]]
              [:th [:div.th-inner "env"]]
              [:th [:div.th-inner "launch time"]]
@@ -80,6 +81,34 @@
                [:td.collapsing (:ttl row)]
                ])]]]]]])))
 
+(defn cloudformation-stacks
+  []
+  (let [filter (r/atom nil)]
+    (fn []
+      [:div#stacks
+       [search-box filter]
+       [:div.component
+        [:div.fixed-table-container
+         [:div.header-background]
+         [:div.fixed-table-container-inner
+          [:table.ui.collapsing.striped.sortable.single.line.table
+           [:thead
+            [:tr
+             [:th [:div.th-inner "Cloudformations"]]
+             [:th [:div.th-inner "status"]]
+             [:th [:div.th-inner "env"]]
+             [:th [:div.th-inner "creation-time"]]
+             ]]
+           [:tbody
+            (for [row (filter-content @filter (:stacks @app-state))]
+              ^{:key (:id row)}
+              [:tr
+               [:td.collapsing (:name row)]
+               [:td.collapsing (:status row)]
+               [:td.collapsing (:env row)]
+               [:td.collapsing (:creation-time row)]
+               ])]]]]]])))
+
 ;; ------------------------------------------------
 
 (defn update!
@@ -97,7 +126,8 @@
 
 (defn mount-components []
   (render #'ec2-instances   "ec2")
-  (render #'route53-records "route53"))
+  (render #'route53-records "route53")
+  (render #'cloudformation-stacks "cloudformation-stacks"))
 
 (defn init! []
   (ws/make-websocket!

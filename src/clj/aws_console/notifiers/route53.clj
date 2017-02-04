@@ -1,6 +1,7 @@
 (ns aws-console.notifiers.route53
   (:require [amazonica.aws.route53 :as route53]
             [amazonica.core :refer [defcredential]]
+            [aws-console.notifiers.util :refer [update-id]]
             [cheshire.core :refer [generate-string]]
             [cheshire.generate :as generate]
             [clj-time.coerce :as coerce]
@@ -36,14 +37,6 @@
   (update record-set :resource-records
           (fn [records]
             (str/join " " (mapv #(:value %) records)))))
-
-(defn- uuid
-  []
-  (java.util.UUID/randomUUID))
-
-(defn- update-id
-  [instance]
-  (assoc instance :id (uuid)))
 
 (defn list-record-sets
   []
