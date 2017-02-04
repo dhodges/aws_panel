@@ -2,6 +2,7 @@
   (:require [clojure.tools.logging :as log]
             [aws-console.routes.websockets :as ws]
             [aws-console.notifiers.ec2 :as ec2]
+            [aws-console.notifiers.rds :as rds]
             [aws-console.notifiers.route53 :as route53]
             [aws-console.notifiers.cloudformation :as cloudform]
             [clojure.string :as str]))
@@ -80,5 +81,5 @@
 (defnotifier :ec2-instances   ec2/list-instances 15)
 (defnotifier :route53-records route53/list-record-sets 20)
 (defnotifier :stacks          cloudform/list-stacks 20)
-
+(defnotifier :rds-instances   rds/list-rds-instances 20)
 

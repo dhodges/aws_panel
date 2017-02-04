@@ -7,7 +7,8 @@
 (defonce app-state
   (r/atom {:ec2-instances []
            :route53-records []
-           :stacks []}))
+           :stacks []
+           :rds-instances []}))
 
 (defn log [str]
   (.log js/console str))
@@ -109,6 +110,36 @@
                [:td.collapsing (:creation-time row)]
                ])]]]]]])))
 
+(defn rds-instances
+  []
+  (let [filter (r/atom nil)]
+    (fn []
+      [:div#stacks
+       [search-box filter]
+       [:div.component
+        [:div.fixed-table-container
+         [:div.header-background]
+         [:div.fixed-table-container-inner
+          [:table.ui.collapsing.striped.sortable.single.line.table
+           [:thead
+            [:tr
+             [:th [:div.th-inner "RDS name"]]
+             [:th [:div.th-inner "db_name"]]
+             [:th [:div.th-inner "engine"]]
+             [:th [:div.th-inner "version"]]
+             [:th [:div.th-inner "status"]]
+             ]]
+           [:tbody
+            (for [row (filter-content @filter (:rds-instances @app-state))]
+              ^{:key (:id row)}
+              [:tr
+               [:td.collapsing (:name row)]
+               [:td.collapsing (:dbname row)]
+               [:td.collapsing (:engine row)]
+               [:td.collapsing (:version row)]
+               [:td.collapsing (:status row)]
+               ])]]]]]])))
+
 ;; ------------------------------------------------
 
 (defn update!
@@ -127,7 +158,9 @@
 (defn mount-components []
   (render #'ec2-instances   "ec2")
   (render #'route53-records "route53")
-  (render #'cloudformation-stacks "cloudformation-stacks"))
+  (render #'cloudformation-stacks "cloudformation-stacks")
+  (render #'rds-instances   "rds")
+  )
 
 (defn init! []
   (ws/make-websocket!
