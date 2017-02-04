@@ -1,4 +1,4 @@
-(defproject aws_console "0.1.0-SNAPSHOT"
+(defproject aws_panel "0.1.0-SNAPSHOT"
 
   :description "playing with clojurescript - a simple AWS console"
   :url ""
@@ -42,7 +42,7 @@
   :source-paths ["src/clj" "src/cljc"]
   :resource-paths ["resources" "target/cljsbuild"]
   :target-path "target/%s/"
-  :main aws-console.core
+  :main aws-panel.core
 
   :plugins [[lein-auto "0.1.2"]
             [lein-cljsbuild "1.1.4"]
@@ -81,7 +81,7 @@
                  {:externs-validation :off :non-standard-jsdoc :off}}}}}
 
              :aot :all
-             :uberjar-name "aws_console.jar"
+             :uberjar-name "aws_panel.jar"
              :source-paths ["env/prod/clj"]
              :resource-paths ["env/prod/resources"]}
 
@@ -105,7 +105,7 @@
                    {:app
                     {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
                      :compiler
-                     {:main "aws-console.app"
+                     {:main "aws-panel.app"
                       :asset-path "/js/out"
                       :output-to "target/cljsbuild/public/js/app.js"
                       :output-dir "target/cljsbuild/public/js/out"
@@ -127,7 +127,7 @@
                     {:source-paths ["src/cljc" "src/cljs" "test/cljs"]
                      :compiler
                      {:output-to "target/test.js"
-                      :main "aws-console.doo-runner"
+                      :main "aws-panel.doo-runner"
                       :optimizations :whitespace
                       :pretty-print true}}}}}
    

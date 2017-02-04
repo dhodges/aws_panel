@@ -10,6 +10,6 @@ http://blog.podsnap.com/yakherd.html
 
 http://www.luminusweb.net/docs/profiles.md
 
-lein new luminus aws_console +http-kit +cljs +reagent +cider +sassc +kibit
+lein new luminus aws_panel +http-kit +cljs +reagent +cider +sassc +kibit
 
 AWS javadocs: http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/index.html
