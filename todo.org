@@ -1,0 +1,3 @@
+
+* TODO add global filtering (i.e. filter term across all displayed boxes)
+* TODO show instances (and their status) for Load Balancers and Auto Scaling Groups
