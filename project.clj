@@ -8,7 +8,7 @@
                                com.amazonaws/amazon-kinesis-client]]
                  [ch.qos.logback/logback-classic "1.1.7"]
                  [cheshire "5.7.0"]
-                 [cider/cider-nrepl "0.14.0"]
+                 [cider/cider-nrepl "0.15.0"]
                  [clj-time "0.13.0"]
                  [cljs-ajax "0.5.8"]
                  [com.amazonaws/aws-java-sdk "1.10.49"]
@@ -49,8 +49,8 @@
             [lein-cprop "1.0.1"]
             [lein-environ "1.1.0"]
             [lein-kibit "0.1.2"]
-            [refactor-nrepl    "2.2.0"]
-            [cider/cider-nrepl "0.14.0"]
+            [refactor-nrepl    "2.3.1"]
+            [cider/cider-nrepl "0.15.1"]
             ]
   
   :clean-targets ^{:protect false}
